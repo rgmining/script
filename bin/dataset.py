@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+# along with rgmining-script. If not, see <http://www.gnu.org/licenses/>.
 #
 # pylint: disable=wrong-import-position,invalid-name,no-member,import-error
 """Analyze and handle datasets.
@@ -34,7 +34,7 @@ import ria
 import numpy as np
 
 sys.path.append(path.join(path.dirname(__file__), "../"))
-from helper.datasets import DATASETS
+from helper import DATASETS
 
 
 # Input type
@@ -360,13 +360,12 @@ def _dispatch(cmd, dataset, dataset_param, **kwargs):
         logging.info("Load the dataset.")
         graph = ria.one_graph()
         DATASETS[dataset](graph, **params)
-
-        logging.info("Start analyzing.")
-        cmd(graph=graph, **kwargs)
-
     finally:
         if "fp" in params:
             params["fp"].close()
+
+    logging.info("Start analyzing.")
+    cmd(graph=graph, **kwargs)
 
 
 def main():
