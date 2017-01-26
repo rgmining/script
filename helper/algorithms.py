@@ -18,6 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with rgmining-script. If not, see <http://www.gnu.org/licenses/>.
 #
+"""Check which algorithms are installed.
+
+This module exports a constant variable, :data:`ALGORITHMS`,
+The ``ALGORITHMS`` is a dictionary mapping an installed algorithm name to a
+constructor of the review graph implementing the algorithm.
+
+You can get a set of installed algorithms names by ``ALGORITHMS.keys()``, and
+create a review graph by ``ALGORITHMS["name"](params)``.
+"""
 from logging import getLogger
 
 _LOGGER = getLogger(__name__)

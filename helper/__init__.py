@@ -19,6 +19,10 @@
 # along with rgmining-script. If not, see <http://www.gnu.org/licenses/>.
 #
 """Helper modules.
+
+This module exports two variables, :data:`ALGORITHMS <algorithms.ALGORITHMS>`
+and :data:`DATASETS <datasets.DATASETS>`.
+See each document for more information.
 """
 from __future__ import absolute_import
 from helper.algorithms import ALGORITHMS
