@@ -346,14 +346,21 @@ def review_variance(graph, output, target=None, csv_format=False):
         })
 
 
-def _dispatch(cmd, dataset, dataset_param, **kwargs):
-    """Dispatch command to be run.
+def load(dataset, dataset_param):
+    """Load a dataset and return a review graph.
+
+    Args:
+      dataset: name of the dataset to be loaded.
+      dataset_param: list of key-value parameters.
+
+    Returns:
+      Review graph, which is an instance of :class:`ria:ria.bipartite.BipartiteGraph`.
     """
     logging.info("Prepare options for the selected dataset.")
     params = {key: value
               for key, value in [v.split("=") for v in dataset_param]}
     if "file" in params:
-        params["fp"] = open(params[file])
+        params["fp"] = open(params["file"])
         del params["file"]
 
     try:
@@ -363,6 +370,13 @@ def _dispatch(cmd, dataset, dataset_param, **kwargs):
     finally:
         if "fp" in params:
             params["fp"].close()
+    return graph
+
+
+def _dispatch(cmd, dataset, dataset_param, **kwargs):
+    """Dispatch command to be run.
+    """
+    graph = load(dataset, dataset_param)
 
     logging.info("Start analyzing.")
     cmd(graph=graph, **kwargs)
@@ -371,6 +385,8 @@ def _dispatch(cmd, dataset, dataset_param, **kwargs):
 def main():
     """The main function.
     """
+    # TODO: Support loading additional datasets.
+    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     parser = dsargparse.ArgumentParser(main=main)
     parser.add_argument(
         "--output", default=sys.stdout, type=dsargparse.FileType("w"),
@@ -452,16 +468,16 @@ def main():
         "--csv", action="store_true", dest="csv_format",
         help="Outputs will be formatted in CSV format.")
 
-    _dispatch(**vars(parser.parse_args()))
+    try:
+        _dispatch(**vars(parser.parse_args()))
+    except KeyboardInterrupt:
+        return "Canceled"
+    except Exception as e:  # pylint: disable=broad-except
+        logging.exception("Untracked exception occurred.")
+        return e.message
+    finally:
+        logging.shutdown()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
-    try:
-        main()
-    except KeyboardInterrupt:
-        pass
-    except Exception:  # pylint: disable=broad-except
-        logging.exception("Untracked exception occurred.")
-    finally:
-        logging.shutdown()
+    main()
