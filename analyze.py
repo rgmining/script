@@ -51,7 +51,7 @@ from helper import ALGORITHMS
 from helper import DATASETS
 
 
-def analyze(graph, output, loop=10, threshold=10**-5):
+def analyze(graph, output=sys.stdout, loop=10, threshold=10**-5):
     """Execute iteration.
 
     The iteration ends if the number of iteration reaches the given maximum
@@ -86,14 +86,17 @@ def analyze(graph, output, loop=10, threshold=10**-5):
     dataset_io.print_state(graph, "final", output)
 
 
-def run(method, method_param, dataset, dataset_param, **kwargs):
-    """Prepare a review graph, load a dataset to it, and execute analyze.
+def load(method, method_param, dataset, dataset_param):
+    """Create a review graph, load a dataset to it.
 
     Args:
       method: name of the method to be run.
       method_param: list of strings representing key-value pairs.
       dataset: name of the dataset to be loaded.
       dataset_param: list of strings representing key-value pairs.
+
+    Returns:
+      Graph object.
     """
     # Create a review graph.
     method_param = {key: float(value)
@@ -104,7 +107,7 @@ def run(method, method_param, dataset, dataset_param, **kwargs):
     dataset_param = {key: value
               for key, value in [v.split("=") for v in dataset_param]}
     if "file" in dataset_param:
-        dataset_param["fp"] = open(dataset_param[file])
+        dataset_param["fp"] = open(dataset_param["file"])
         del dataset_param["file"]
     try:
         logging.info("Load the dataset.")
@@ -113,12 +116,25 @@ def run(method, method_param, dataset, dataset_param, **kwargs):
         if "fp" in dataset_param:
             dataset_param["fp"].close()
 
-    analyze(graph, **kwargs)
+    return graph
+
+
+def run(method, method_param, dataset, dataset_param, **kwargs):
+    """Prepare a review graph, load a dataset to it, and execute analyze.
+
+    Args:
+      method: name of the method to be run.
+      method_param: list of strings representing key-value pairs.
+      dataset: name of the dataset to be loaded.
+      dataset_param: list of strings representing key-value pairs.
+    """
+    analyze(load(method, method_param, dataset, dataset_param), **kwargs)
 
 
 def main():
     """Main function.
     """
+    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     parser = dsargparse.ArgumentParser(main=main)
 
     # Dataset
@@ -157,19 +173,16 @@ def main():
         help="file path to store results (Default: stdout).")
 
     # Run
-    run(**vars(parser.parse_args()))
+    try:
+        return run(**vars(parser.parse_args()))
+    except KeyboardInterrupt:
+        return "Canceled"
+    except Exception as e:  # pylint: disable=broad-except
+        logging.exception("Untracked exception occurred.")
+        return e.message
+    finally:
+        logging.shutdown()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stderr)
-    res = 0
-    try:
-        main()
-    except KeyboardInterrupt:
-        res = 1
-    except Exception:  # pylint: disable=broad-except
-        logging.exception("Untracked exception occurred.")
-        res = 2
-    finally:
-        logging.shutdown()
-    sys.exit(res)
+    main()
