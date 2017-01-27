@@ -39,7 +39,7 @@ _LOGGER = getLogger(__name__)
 """
 
 DATASETS = {}
-"""Dictionaly of installed datasets.
+"""Dictionary of installed datasets.
 
 Keys are the names of the installed datasets, and the associated values are
 load function of that dataset.

@@ -152,7 +152,7 @@ class TestRatingAverage(TestBase):
     """
 
     def test(self):
-        """Test with a simple exmple.
+        """Test with a simple example.
         """
         buf = StringIO()
         dataset.rating_average(self.graph, buf)
@@ -172,7 +172,7 @@ class TestDistinctProduct(TestBase):
     """
 
     def test(self):
-        """Test with a simple exmple.
+        """Test with a simple example.
         """
         buf = StringIO()
         dataset.distinct_product(self.graph, buf)
@@ -187,7 +187,7 @@ class TestPopularProducts(TestBase):
     """
 
     def test(self):
-        """Test with a simple exmple.
+        """Test with a simple example.
         """
         buf = StringIO()
         dataset.popular_products(self.graph, buf, 3)

@@ -41,7 +41,7 @@ from helper import DATASETS
 def file_or_list(value):
     """Argument type for dsargparse.
 
-    If argument is a file, it will be opend and passed as an iterator.
+    If argument is a file, it will be opened and passed as an iterator.
     If argument is a string, it will be treated as a comma-separated list.
 
     Args:
@@ -105,7 +105,7 @@ def reviewer_size(graph, output, target, csv_format=False):
         {
           "reviewer": <Reviewer ID>,
           "size": <The number of reviews the reivewer posts>,
-          "product": <Product ID whith the reviewer reviews in the targets>
+          "product": <Product ID which the reviewer reviews in the targets>
         }
 
     In the outputs, one line represents one JSON object.
@@ -232,7 +232,7 @@ def distinct_product(graph, output):
 
 
 def popular_products(graph, output, threshold=2):
-    """Output ID of products of which the nember of reviews >= threshold.
+    """Output ID of products of which the number of reviews >= threshold.
 
     Args:
       graph: Graph instance to which the target dataset is loaded.
@@ -294,7 +294,7 @@ def review_variance(graph, output, target=None, csv_format=False):
     """Output variances of reviews for each product.
 
     Each line of the output will formatted as a JSON document,
-    of which sheme is as::
+    of which schema is as::
 
         {
           "product_id": <Product ID>,

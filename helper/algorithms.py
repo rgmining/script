@@ -34,7 +34,7 @@ _LOGGER = getLogger(__name__)
 """
 
 ALGORITHMS = {}
-"""Dictionaly of installed algorithms.
+"""Dictionary of installed algorithms.
 
 Keys are the names of the installed algorithms, and the associated value is
 the graph creation function of that dataset.

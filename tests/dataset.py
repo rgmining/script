@@ -52,7 +52,7 @@ SMALL_DATASET=[
         "date": "2000-08-21"
     },
 ]
-"""Simle and small dataset.
+"""Simple and small dataset.
 """
 
 
