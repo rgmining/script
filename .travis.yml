@@ -1,0 +1,7 @@
+language: python
+apt:
+  packages:
+    - python-numpy
+    - python-scipy
+script:
+  - python setup.py test
