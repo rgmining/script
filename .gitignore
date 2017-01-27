@@ -1,3 +1,5 @@
+*.bak
+
 ### https://raw.github.com/github/gitignore/f2ce448f2ba7a092da05482ceca99209127c0884/python.gitignore
 
 # Byte-compiled / optimized / DLL files
@@ -91,5 +93,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-
