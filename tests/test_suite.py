@@ -28,6 +28,7 @@ import unittest
 
 TESTS = (
     "tests.analyze_test",
+    "tests.dataset_test",
 )
 """Collection of test modules."""
 
