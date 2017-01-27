@@ -1,7 +1,7 @@
 Scripts for Analyzing Review Graphs
 ===================================
 
-|GPLv3| |Release|
+|GPLv3| |Build Status| |wercker status| |Release|
 
 |Logo|
 
@@ -133,6 +133,10 @@ more detail.
 
 .. |GPLv3| image:: https://img.shields.io/badge/license-GPLv3-blue.svg
    :target: https://www.gnu.org/copyleft/gpl.html
+.. |Build Status| image:: https://travis-ci.org/rgmining/script.svg?branch=master
+   :target: https://travis-ci.org/rgmining/script
+.. |wercker status| image:: https://app.wercker.com/status/f973cb1847c2c30e801fa4aa1fd417a6/s/master
+   :target: https://app.wercker.com/project/byKey/f973cb1847c2c30e801fa4aa1fd417a6
 .. |Release| image:: https://img.shields.io/badge/release-0.5.0-brightgreen.svg
    :target: https://github.com/rgmining/script/releases/tag/0.5.0
 .. |Logo| image:: https://rgmining.github.io/script/_static/image.png

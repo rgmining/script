@@ -1,5 +1,7 @@
 # Scripts for Analyzing Review Graphs
 [![GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://www.gnu.org/copyleft/gpl.html)
+[![Build Status](https://travis-ci.org/rgmining/script.svg?branch=master)](https://travis-ci.org/rgmining/script)
+[![wercker status](https://app.wercker.com/status/f973cb1847c2c30e801fa4aa1fd417a6/s/master "wercker status")](https://app.wercker.com/project/byKey/f973cb1847c2c30e801fa4aa1fd417a6)
 [![Release](https://img.shields.io/badge/release-0.5.0-brightgreen.svg)](https://github.com/rgmining/script/releases/tag/0.5.0)
 
 [![Logo](https://rgmining.github.io/script/_static/image.png)](https://rgmining.github.io/script/)
