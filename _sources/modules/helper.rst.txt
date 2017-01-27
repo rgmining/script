@@ -1,0 +1,28 @@
+helper package
+==============
+
+.. automodule:: helper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+helper.algorithms module
+------------------------
+
+.. automodule:: helper.algorithms
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+helper.datasets module
+----------------------
+
+.. automodule:: helper.datasets
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+

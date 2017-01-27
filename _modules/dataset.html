@@ -1,0 +1,485 @@
+ <!DOCTYPE html> <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]--> <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]--> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>dataset &mdash; Scripts for Review Graph Mining 0.5.0 documentation</title> <link rel="search" type="application/opensearchdescription+xml" title="Search within Scripts for Review Graph Mining 0.5.0 documentation" href="../_static/opensearch.xml"> <link rel="stylesheet" href="../_static/css/theme.css"> <link rel="index" title="Index" href="../genindex.html"> <link rel="search" title="Search" href="../search.html"> <link rel="top" title="Scripts for Review Graph Mining 0.5.0 documentation" href="../index.html"> <link rel="up" title="Module code" href="index.html"> <meta name="title" content="dataset &mdash; Scripts for Review Graph Mining 0.5.0 documentation"> <meta name="description" content="dataset"> <meta property="og:type" content="article"> <meta property="og:title" content="dataset &mdash; Scripts for Review Graph Mining 0.5.0 documentation"> <meta property="og:image" content="https://rgmining.github.io/script/_static/image.png"> <meta property="og:url" content="https://rgmining.github.io/script/_modules/dataset.html"> <meta property="og:site_name" content="Scripts for Review Graph Mining 0.5.0 documentation"> <meta property="og:description" content="dataset"> <meta name="twitter:site" content="@junkawamoto"> <meta name="twitter:card" content="dataset"> <script src="https://use.fontawesome.com/f179dac0e7.js" async></script> <script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-4734862314145555",enable_page_level_ads:!0})</script> <script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-82315630-2","auto"),ga("send","pageview")</script> <script src="../_static/js/modernizr.min.js"></script> </head> <body class="wy-body-for-nav" role="document"> <div class="wy-grid-for-nav"> <nav data-toggle="wy-nav-shift" class="wy-nav-side"> <div class="wy-side-scroll"> <div class="wy-side-nav-search"> <a href="../index.html" class="icon icon-home"> Scripts for Review Graph Mining </a> <div class="version"> 0.5 </div> <div role="search"> <form id="rtd-search-form" class="wy-form" action="../search.html" method="get"> <input type="text" name="q" placeholder="Search docs"> <input type="hidden" name="check_keywords" value="yes"> <input type="hidden" name="area" value="default"> </form> </div> </div> <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation"> <div class="local-toc"></div> <hr> <ul> <li><a href="https://rgmining.github.io/">Review Graph Mining Project Top</a></li> <li><a href="https://rgmining.github.io/forum.html">Forum</a></li> </ul> <hr> <div style="padding:0"> <div style="width:300px;margin:auto"> <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-4734862314145555" data-ad-slot="6934003829"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> </div> </div> </div> </div> </nav> <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"> <nav class="wy-nav-top" role="navigation" aria-label="top navigation"> <i data-toggle="wy-nav-top" class="fa fa-bars"></i> <a href="../index.html">Scripts for Review Graph Mining</a> </nav> <div class="wy-nav-content"> <div class="rst-content"> <div role="navigation" aria-label="breadcrumbs navigation"> <ul class="wy-breadcrumbs"> <li><a href="../index.html">Docs</a> &raquo;</li> <li><a href="index.html">Module code</a> &raquo;</li> <li>dataset</li> <li class="wy-breadcrumbs-aside"> </li> </ul> <hr> </div> <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article"> <div itemprop="articleBody"> <h1>Source code for dataset</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># dataset.py</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2017 Junpei Kawamoto</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of rgmining-script.</span>
+<span class="c1">#</span>
+<span class="c1"># rgmining-script is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># rgmining-script is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with rgmining-script. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1"># pylint: disable=wrong-import-position,invalid-name,no-member,import-error</span>
+<span class="sd">&quot;&quot;&quot;Analyze and handle datasets.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">common.writer</span> <span class="k">import</span> <span class="n">JSONWriter</span><span class="p">,</span> <span class="n">CSVWriter</span>
+<span class="kn">import</span> <span class="nn">dsargparse</span>
+<span class="kn">import</span> <span class="nn">ria</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../&quot;</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">helper</span> <span class="k">import</span> <span class="n">DATASETS</span>
+
+
+<span class="c1"># Input type</span>
+<div class="viewcode-block" id="file_or_list"><a class="viewcode-back" href="../modules/dataset.html#dataset.file_or_list">[docs]</a><span class="k">def</span> <span class="nf">file_or_list</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Argument type for dsargparse.</span>
+
+<span class="sd">    If argument is a file, it will be opened and passed as an iterator.</span>
+<span class="sd">    If argument is a string, it will be treated as a comma-separated list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      value: Argument value.</span>
+
+<span class="sd">    Yield:</span>
+<span class="sd">      each line in the file if the given value points a file, otherwise,</span>
+<span class="sd">      each item in the given collection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">line</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">item</span></div>
+
+
+<span class="c1">#------------------------------------------------</span>
+<span class="c1"># Reviewer</span>
+<span class="c1">#------------------------------------------------</span>
+<div class="viewcode-block" id="retrieve_reviewers"><a class="viewcode-back" href="../modules/dataset.html#dataset.retrieve_reviewers">[docs]</a><span class="k">def</span> <span class="nf">retrieve_reviewers</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output the ID of reviewers who review at least one of the given products.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      target: a list of target product ids.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">reviewer</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">reviewers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_products</span><span class="p">(</span><span class="n">reviewer</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">target_ids</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">reviewer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">break</span></div>
+
+
+<div class="viewcode-block" id="active_reviewers"><a class="viewcode-back" href="../modules/dataset.html#dataset.active_reviewers">[docs]</a><span class="k">def</span> <span class="nf">active_reviewers</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output the ID of reviewers who review at least threshold items.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      threshold: the threshold (default: 2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">reviewer</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">reviewers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">retrieve_products</span><span class="p">(</span><span class="n">reviewer</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">reviewer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reviewer_size"><a class="viewcode-back" href="../modules/dataset.html#dataset.reviewer_size">[docs]</a><span class="k">def</span> <span class="nf">reviewer_size</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output the number of reviews of each reviewer who reviews target products.</span>
+
+<span class="sd">    Compute the number of reviews of each reviewer who reviews at least one</span>
+<span class="sd">    product in the given target products.</span>
+
+<span class="sd">    The default output format is JSON and the scheme as::</span>
+
+<span class="sd">        {</span>
+<span class="sd">          &quot;reviewer&quot;: &lt;Reviewer ID&gt;,</span>
+<span class="sd">          &quot;size&quot;: &lt;The number of reviews the reviewer posts&gt;,</span>
+<span class="sd">          &quot;product&quot;: &lt;Product ID which the reviewer reviews in the targets&gt;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    In the outputs, one line represents one JSON object.</span>
+
+<span class="sd">    CSV format is also supported to output results.</span>
+<span class="sd">    In this option, the first line shows a header.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      target: a list of target object IDs.</span>
+<span class="sd">      csv_format: If True, outputs will be formatted in CSV format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">csv_format</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">CSVWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;reviewer&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">JSONWriter</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">reviewers</span><span class="p">:</span>
+        <span class="n">products</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_products</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">({</span>
+                    <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">products</span><span class="p">),</span>
+                    <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+                <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="filter_reviewers"><a class="viewcode-back" href="../modules/dataset.html#dataset.filter_reviewers">[docs]</a><span class="k">def</span> <span class="nf">filter_reviewers</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output reviews posted by reviewers whose IDs match the given set of IDs.</span>
+
+<span class="sd">    The output format is JSON and the scheme as::</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;member_id&quot;: &lt;Reviewer ID&gt;,</span>
+<span class="sd">            &quot;product_id&quot;: &lt;Product ID&gt;,</span>
+<span class="sd">            &quot;rating&quot;: &lt;Rating score&gt;,</span>
+<span class="sd">            &quot;date&quot;: &lt;Date the review posted&gt;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    In the outputs, one line represents one JSON object.</span>
+
+<span class="sd">    CSV format is also supported to output results.</span>
+<span class="sd">    In this option, the first line shows a header.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      target: a list of target reviewer ids.</span>
+<span class="sd">      csv_format: If True, outputs will be formatted in CSV format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">csv_format</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">CSVWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="s2">&quot;product_id&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">JSONWriter</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">reviewers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_products</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                <span class="n">review</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_review</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="n">review</span><span class="o">.</span><span class="n">date</span>
+                <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+                    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">review</span><span class="o">.</span><span class="n">date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">({</span>
+                    <span class="s2">&quot;member_id&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="n">review</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span>
+                <span class="p">})</span></div>
+
+
+<span class="c1">#------------------------------------------------</span>
+<span class="c1"># Product</span>
+<span class="c1">#------------------------------------------------</span>
+<div class="viewcode-block" id="rating_average"><a class="viewcode-back" href="../modules/dataset.html#dataset.rating_average">[docs]</a><span class="k">def</span> <span class="nf">rating_average</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output average rating scores of each product.</span>
+
+<span class="sd">    The output format is JSON and the scheme as::</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;product_id&quot;: &lt;Product ID&gt;,</span>
+<span class="sd">            &quot;summary&quot;: &lt;Average rating score&gt;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    In the outputs, one line represents one JSON object.</span>
+
+<span class="sd">    CSV format is also supported to output results.</span>
+<span class="sd">    In this option, the first line shows a header.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      csv_format: If True, outputs will be formatted in CSV format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">csv_format</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">CSVWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;product_id&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">JSONWriter</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_review</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">score</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_reviewers</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="p">])</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">({</span>
+            <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">avg</span>
+        <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="distinct_product"><a class="viewcode-back" href="../modules/dataset.html#dataset.distinct_product">[docs]</a><span class="k">def</span> <span class="nf">distinct_product</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output distinct product IDs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="popular_products"><a class="viewcode-back" href="../modules/dataset.html#dataset.popular_products">[docs]</a><span class="k">def</span> <span class="nf">popular_products</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output ID of products of which the number of reviews &gt;= threshold.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      threshold: the threshold (default: 2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">retrieve_reviewers</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="filter_product"><a class="viewcode-back" href="../modules/dataset.html#dataset.filter_product">[docs]</a><span class="k">def</span> <span class="nf">filter_product</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output reviews posted to products of which IDs match the given set of IDs.</span>
+
+<span class="sd">    The output format is JSON and the scheme as::</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;member_id&quot;: &lt;Reviewer ID&gt;,</span>
+<span class="sd">            &quot;product_id&quot;: &lt;Product ID&gt;,</span>
+<span class="sd">            &quot;rating&quot;: &lt;Rating score&gt;,</span>
+<span class="sd">            &quot;date&quot;: &lt;Date the review posted&gt;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    In the outputs, one line represents one JSON object.</span>
+
+<span class="sd">    CSV format is also supported to output results.</span>
+<span class="sd">    In this option, the first line shows a header.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      graph: Graph instance to which the target dataset is loaded.</span>
+<span class="sd">      output: a writable object.</span>
+<span class="sd">      target: a list of target product IDs.</span>
+<span class="sd">      csv_format: If True, outputs will be formatted in CSV format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">csv_format</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">CSVWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="s2">&quot;product_id&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">JSONWriter</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_reviewers</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                <span class="n">review</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_review</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="n">review</span><span class="o">.</span><span class="n">date</span>
+                <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+                    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">review</span><span class="o">.</span><span class="n">date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">({</span>
+                    <span class="s2">&quot;member_id&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="n">review</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span>
+                <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="review_variance"><a class="viewcode-back" href="../modules/dataset.html#dataset.review_variance">[docs]</a><span class="k">def</span> <span class="nf">review_variance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">csv_format</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Output variances of reviews for each product.</span>
+
+<span class="sd">    Each line of the output will be formatted as a JSON document,</span>
+<span class="sd">    of which schema is as::</span>
+
+<span class="sd">        {</span>
+<span class="sd">          &quot;product_id&quot;: &lt;Product ID&gt;,</span>
+<span class="sd">          &quot;size&quot;: &lt;number of reviews&gt;,</span>
+<span class="sd">          &quot;variance&quot;: &lt;variance of reviews&gt;</span>
+<span class="sd">        }</span>
+
+<span class="sd">    In the outputs, one line represents one JSON object.</span>
+
+<span class="sd">    CSV format is also supported to output results.</span>
+<span class="sd">    In this option, the first line shows a header.</span>
+
+<span class="sd">    If target is supplied, only products of which id is in the target will be</span>
+<span class="sd">    outputted.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      data: a readable object containing reviews.</span>
+<span class="sd">      output: a writable object to be outputted results.</span>
+<span class="sd">      target: an iterable of target product ids (default: None).</span>
+<span class="sd">      csv_format: If True, outputs will be formatted in CSV format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">csv_format</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">CSVWriter</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;member_id&quot;</span><span class="p">,</span> <span class="s2">&quot;product_id&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">JSONWriter</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+        <span class="n">target_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">target_ids</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">target_ids</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">target_ids</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">reviews</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_review</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">score</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">retrieve_reviewers</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reviews</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">({</span>
+            <span class="s2">&quot;product_id&quot;</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">reviews</span><span class="p">),</span>
+            <span class="s2">&quot;variance&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">reviews</span><span class="p">)</span>
+        <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../modules/dataset.html#dataset.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a dataset and return a review graph.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      dataset: name of the dataset to be loaded.</span>
+<span class="sd">      dataset_param: list of key-value parameters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Review graph, which is an instance of :class:`ria:ria.bipartite.BipartiteGraph`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Prepare options for the selected dataset.&quot;</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span>
+              <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dataset_param</span><span class="p">]}</span>
+    <span class="k">if</span> <span class="s2">&quot;file&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">])</span>
+        <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Load the dataset.&quot;</span><span class="p">)</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">ria</span><span class="o">.</span><span class="n">one_graph</span><span class="p">()</span>
+        <span class="n">DATASETS</span><span class="p">[</span><span class="n">dataset</span><span class="p">](</span><span class="n">graph</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;fp&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<span class="k">def</span> <span class="nf">_dispatch</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dispatch command to be run.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Start analyzing.&quot;</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../modules/dataset.html#dataset.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The main function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Support loading additional datasets.</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">dsargparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">main</span><span class="o">=</span><span class="n">main</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output file (default: stdout).&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span>
+        <span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;choose one dataset to be analyzed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;If choose `file`, give a file path via dataset-param with file key</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;i.e. --dataset-param file=&lt;path&gt;.&quot;</span><span class="p">))</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--dataset-param&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;dataset_param&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;key and value pair which are connected with &#39;=&#39;.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;This option can be set multiply.&quot;</span><span class="p">))</span>
+
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">()</span>
+
+    <span class="c1"># Reviewer</span>
+    <span class="n">reviewer_cmd</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reviewer&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;analyze reviewer information&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">()</span>
+
+    <span class="n">retrieve_reviewers_cmd</span> <span class="o">=</span> <span class="n">reviewer_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">retrieve_reviewers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;retrieve&quot;</span><span class="p">)</span>
+    <span class="n">retrieve_reviewers_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file containing target product IDs.&quot;</span><span class="p">)</span>
+
+    <span class="n">active_reviewer_cmd</span> <span class="o">=</span> <span class="n">reviewer_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">active_reviewers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;active&quot;</span><span class="p">)</span>
+    <span class="n">active_reviewer_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--threshold&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">size_cmd</span> <span class="o">=</span> <span class="n">reviewer_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">reviewer_size</span><span class="p">)</span>
+    <span class="n">size_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">))</span>
+    <span class="n">size_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csv&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;csv_format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Outputs will be formatted in CSV format.&quot;</span><span class="p">)</span>
+
+    <span class="n">filter_reviewer_cmd</span> <span class="o">=</span> <span class="n">reviewer_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">filter_reviewers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span>
+    <span class="n">filter_reviewer_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file containing target reviewer IDs.&quot;</span><span class="p">)</span>
+    <span class="n">filter_reviewer_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csv&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;csv_format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Outputs will be formatted in CSV format.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Product</span>
+    <span class="n">product_cmd</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;product&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;analyze product information&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">()</span>
+
+    <span class="n">rating_average_cmd</span> <span class="o">=</span> <span class="n">product_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">rating_average</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+    <span class="n">rating_average_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csv&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;csv_format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Outputs will be formatted in CSV format.&quot;</span><span class="p">)</span>
+
+    <span class="n">product_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">distinct_product</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;distinct&quot;</span><span class="p">)</span>
+
+    <span class="n">popular_products_cmd</span> <span class="o">=</span> <span class="n">product_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">popular_products</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;popular&quot;</span><span class="p">)</span>
+    <span class="n">popular_products_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--threshold&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">filter_product_cmd</span> <span class="o">=</span> <span class="n">product_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="n">filter_product</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span>
+    <span class="n">filter_product_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file containing target product IDs.&quot;</span><span class="p">)</span>
+    <span class="n">filter_product_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csv&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;csv_format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Outputs will be formatted in CSV format.&quot;</span><span class="p">)</span>
+
+    <span class="n">review_variance_cmd</span> <span class="o">=</span> <span class="n">product_cmd</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="n">review_variance</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;variance&quot;</span><span class="p">)</span>
+    <span class="n">review_variance_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--target&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">dsargparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">),</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file consisting of a list of product ids.&quot;</span><span class="p">)</span>
+    <span class="n">review_variance_cmd</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csv&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;csv_format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Outputs will be formatted in CSV format.&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_dispatch</span><span class="p">(</span><span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()))</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Canceled&quot;</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Untracked exception occurred.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div> </div> <div class="articleComments"> </div> </div> <footer> <hr> <div role="contentinfo"> <p> &copy; Copyright 2017, Junpei Kawamoto. </p> </div> Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. <p> </p><div class="addthis_inline_follow_toolbox"></div> <p></p> <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4734862314145555" data-ad-slot="6934003829" data-ad-format="auto"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> </footer> </div> </div> </section> </div> <script>var DOCUMENTATION_OPTIONS={URL_ROOT:"../",VERSION:"0.5.0",COLLAPSE_INDEX:!1,FILE_SUFFIX:".html",HAS_SOURCE:!0,SOURCELINK_SUFFIX:".txt"}</script> <script src="../_static/jquery.js"></script> <script src="../_static/underscore.js"></script> <script src="../_static/doctools.js"></script> <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> <script src="../_static/js/theme.js"></script> <script>jQuery(function(){SphinxRtdTheme.StickyNav.enable()})</script> <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f1fa5b740feddd"></script> </body> </html>

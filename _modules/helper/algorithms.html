@@ -1,0 +1,92 @@
+ <!DOCTYPE html> <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]--> <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]--> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>helper.algorithms &mdash; Scripts for Review Graph Mining 0.5.0 documentation</title> <link rel="search" type="application/opensearchdescription+xml" title="Search within Scripts for Review Graph Mining 0.5.0 documentation" href="../../_static/opensearch.xml"> <link rel="stylesheet" href="../../_static/css/theme.css"> <link rel="index" title="Index" href="../../genindex.html"> <link rel="search" title="Search" href="../../search.html"> <link rel="top" title="Scripts for Review Graph Mining 0.5.0 documentation" href="../../index.html"> <link rel="up" title="Module code" href="../index.html"> <meta name="title" content="helper.algorithms &mdash; Scripts for Review Graph Mining 0.5.0 documentation"> <meta name="description" content="helper.algorithms"> <meta property="og:type" content="article"> <meta property="og:title" content="helper.algorithms &mdash; Scripts for Review Graph Mining 0.5.0 documentation"> <meta property="og:image" content="https://rgmining.github.io/script/_static/image.png"> <meta property="og:url" content="https://rgmining.github.io/script/_modules/helper/algorithms.html"> <meta property="og:site_name" content="Scripts for Review Graph Mining 0.5.0 documentation"> <meta property="og:description" content="helper.algorithms"> <meta name="twitter:site" content="@junkawamoto"> <meta name="twitter:card" content="helper.algorithms"> <script src="https://use.fontawesome.com/f179dac0e7.js" async></script> <script src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-4734862314145555",enable_page_level_ads:!0})</script> <script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-82315630-2","auto"),ga("send","pageview")</script> <script src="../../_static/js/modernizr.min.js"></script> </head> <body class="wy-body-for-nav" role="document"> <div class="wy-grid-for-nav"> <nav data-toggle="wy-nav-shift" class="wy-nav-side"> <div class="wy-side-scroll"> <div class="wy-side-nav-search"> <a href="../../index.html" class="icon icon-home"> Scripts for Review Graph Mining </a> <div class="version"> 0.5 </div> <div role="search"> <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get"> <input type="text" name="q" placeholder="Search docs"> <input type="hidden" name="check_keywords" value="yes"> <input type="hidden" name="area" value="default"> </form> </div> </div> <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation"> <div class="local-toc"></div> <hr> <ul> <li><a href="https://rgmining.github.io/">Review Graph Mining Project Top</a></li> <li><a href="https://rgmining.github.io/forum.html">Forum</a></li> </ul> <hr> <div style="padding:0"> <div style="width:300px;margin:auto"> <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-4734862314145555" data-ad-slot="6934003829"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> </div> </div> </div> </div> </nav> <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"> <nav class="wy-nav-top" role="navigation" aria-label="top navigation"> <i data-toggle="wy-nav-top" class="fa fa-bars"></i> <a href="../../index.html">Scripts for Review Graph Mining</a> </nav> <div class="wy-nav-content"> <div class="rst-content"> <div role="navigation" aria-label="breadcrumbs navigation"> <ul class="wy-breadcrumbs"> <li><a href="../../index.html">Docs</a> &raquo;</li> <li><a href="../index.html">Module code</a> &raquo;</li> <li>helper.algorithms</li> <li class="wy-breadcrumbs-aside"> </li> </ul> <hr> </div> <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article"> <div itemprop="articleBody"> <h1>Source code for helper.algorithms</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># hepler/algorithms.py</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) 2017 Junpei Kawamoto</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of rgmining-script.</span>
+<span class="c1">#</span>
+<span class="c1"># rgmining-script is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># rgmining-script is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with rgmining-script. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;Check which algorithms are installed.</span>
+
+<span class="sd">This module exports a constant variable, :data:`ALGORITHMS`,</span>
+<span class="sd">The ``ALGORITHMS`` is a dictionary mapping an installed algorithm name to a</span>
+<span class="sd">constructor of the review graph implementing the algorithm.</span>
+
+<span class="sd">You can get a set of installed algorithms names by ``ALGORITHMS.keys()``, and</span>
+<span class="sd">create a review graph by ``ALGORITHMS[&quot;name&quot;](params)``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">getLogger</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Logger.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">ALGORITHMS</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">&quot;&quot;&quot;Dictionary of installed algorithms.</span>
+
+<span class="sd">Keys are the names of the installed algorithms, and the associated value is</span>
+<span class="sd">the graph creation function of that dataset.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Load and register RIA.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">ria</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;rgmining-ria is not installed.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+<div class="viewcode-block" id="ignore_args"><a class="viewcode-back" href="../../modules/helper.html#helper.algorithms.ignore_args">[docs]</a>    <span class="k">def</span> <span class="nf">ignore_args</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a wrapped function which ignore given arguments.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="o">*</span><span class="n">_args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The function body.&quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">_</span></div>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;ria&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ria</span><span class="o">.</span><span class="n">ria_graph</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_args</span><span class="p">(</span><span class="n">ria</span><span class="o">.</span><span class="n">one_graph</span><span class="p">)</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;onesum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_args</span><span class="p">(</span><span class="n">ria</span><span class="o">.</span><span class="n">one_sum_graph</span><span class="p">)</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;mra&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_args</span><span class="p">(</span><span class="n">ria</span><span class="o">.</span><span class="n">mra_graph</span><span class="p">)</span>
+
+
+<span class="c1"># Load and register RSD.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">rsd</span>  <span class="c1"># pylint: disable=wrong-import-position</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;rgmining-rsd is not installed.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;rsd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsd</span><span class="o">.</span><span class="n">ReviewGraph</span>
+
+
+<span class="c1"># Load and register Fraud Eagle.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">fraud_eagle</span>  <span class="c1"># pylint: disable=wrong-import-position</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;rgmining-fraud-eagle is not installed.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;feagle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fraud_eagle</span><span class="o">.</span><span class="n">ReviewGraph</span>
+
+
+<span class="c1"># Load and register FRAUDAR.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">fraudar</span>  <span class="c1"># pylint: disable=wrong-import-position</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;rgmining-fraudar is not installed.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create_fraudar_graph</span><span class="p">(</span><span class="n">nblock</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a review graph defined in Fraud Eagle package.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fraudar</span><span class="o">.</span><span class="n">ReviewGraph</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nblock</span><span class="p">))</span>
+    <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;fraudar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_fraudar_graph</span>
+</pre></div> </div> <div class="articleComments"> </div> </div> <footer> <hr> <div role="contentinfo"> <p> &copy; Copyright 2017, Junpei Kawamoto. </p> </div> Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. <p> </p><div class="addthis_inline_follow_toolbox"></div> <p></p> <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4734862314145555" data-ad-slot="6934003829" data-ad-format="auto"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> </footer> </div> </div> </section> </div> <script>var DOCUMENTATION_OPTIONS={URL_ROOT:"../../",VERSION:"0.5.0",COLLAPSE_INDEX:!1,FILE_SUFFIX:".html",HAS_SOURCE:!0,SOURCELINK_SUFFIX:".txt"}</script> <script src="../../_static/jquery.js"></script> <script src="../../_static/underscore.js"></script> <script src="../../_static/doctools.js"></script> <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> <script src="../../_static/js/theme.js"></script> <script>jQuery(function(){SphinxRtdTheme.StickyNav.enable()})</script> <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f1fa5b740feddd"></script> </body> </html>
