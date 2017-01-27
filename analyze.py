@@ -51,7 +51,7 @@ from helper import ALGORITHMS
 from helper import DATASETS
 
 
-def analyze(graph, output=sys.stdout, loop=10, threshold=10**-5):
+def analyze(graph, output=sys.stdout, loop=20, threshold=10**-5):
     """Execute iteration.
 
     The iteration ends if the number of iteration reaches the given maximum
@@ -64,8 +64,8 @@ def analyze(graph, output=sys.stdout, loop=10, threshold=10**-5):
     Args:
       graph: Review graph object.
       output: Writable object to write outputs.
-      loop: Maximum number of iteration (default: 10).
-      threshold: Threshold of the update.
+      loop: Maximum number of iteration (default: 20).
+      threshold: Threshold of the update (default: 10^5).
     """
     # Initial summary
     dataset_io.print_state(graph, 0, output)
@@ -161,10 +161,12 @@ def main():
             "This option can be set multiply."))
     parser.add_argument(
         "--loop", type=int, default=20,
-        help="At most the given number of iteration will be run.")
+        help="At most the given number of iteration will be run (default: 20).")
     parser.add_argument(
-        "--threshold", type=float, default=10^-3,
-        help="Loop ends the update will be smaller than the given number.")
+        "--threshold", type=float, default=10^-5,
+        help=(
+            "Loop ends the update will be smaller than the given number "
+            "(default: 10^-5)."))
 
     # Output configuration
     parser.add_argument(

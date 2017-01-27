@@ -104,7 +104,7 @@ def reviewer_size(graph, output, target, csv_format=False):
 
         {
           "reviewer": <Reviewer ID>,
-          "size": <The number of reviews the reivewer posts>,
+          "size": <The number of reviews the reviewer posts>,
           "product": <Product ID which the reviewer reviews in the targets>
         }
 
@@ -293,7 +293,7 @@ def filter_product(graph, output, target, csv_format=False):
 def review_variance(graph, output, target=None, csv_format=False):
     """Output variances of reviews for each product.
 
-    Each line of the output will formatted as a JSON document,
+    Each line of the output will be formatted as a JSON document,
     of which schema is as::
 
         {
