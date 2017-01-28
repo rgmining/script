@@ -33,8 +33,7 @@ import dsargparse
 import ria
 import numpy as np
 
-sys.path.append(path.join(path.dirname(__file__), "../"))
-from helper import DATASETS
+import helper
 
 
 # Input type
@@ -346,37 +345,10 @@ def review_variance(graph, output, target=None, csv_format=False):
         })
 
 
-def load(dataset, dataset_param):
-    """Load a dataset and return a review graph.
-
-    Args:
-      dataset: name of the dataset to be loaded.
-      dataset_param: list of key-value parameters.
-
-    Returns:
-      Review graph, which is an instance of :class:`ria:ria.bipartite.BipartiteGraph`.
-    """
-    logging.info("Prepare options for the selected dataset.")
-    params = {key: value
-              for key, value in [v.split("=") for v in dataset_param]}
-    if "file" in params:
-        params["fp"] = open(params["file"])
-        del params["file"]
-
-    try:
-        logging.info("Load the dataset.")
-        graph = ria.one_graph()
-        DATASETS[dataset](graph, **params)
-    finally:
-        if "fp" in params:
-            params["fp"].close()
-    return graph
-
-
 def _dispatch(cmd, dataset, dataset_param, **kwargs):
     """Dispatch command to be run.
     """
-    graph = load(dataset, dataset_param)
+    graph = helper.load(ria.one_graph(), dataset, dataset_param)
 
     logging.info("Start analyzing.")
     cmd(graph=graph, **kwargs)
@@ -393,7 +365,7 @@ def main():
         help="Output file (default: stdout).")
     parser.add_argument(
         "dataset", choices=
-        DATASETS.keys(),
+        helper.DATASETS.keys(),
         help=(
             "choose one dataset to be analyzed.\n"
             "If choose `file`, give a file path via dataset-param with file key\n"

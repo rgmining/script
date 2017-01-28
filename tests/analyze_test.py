@@ -29,36 +29,8 @@ import tempfile
 import unittest
 
 import analyze
-import ria
-from tests.dataset import store_dataset, SMALL_DATASET
-
-
-class TestLoad(unittest.TestCase):
-    """Test case for function load.
-    """
-
-    def test_ria_graph(self):
-        """Test for creating a RIA graph with a small dataset.
-        """
-
-        reviewer_names = {review["member_id"] for review in SMALL_DATASET}
-        product_names = {review["product_id"] for review in SMALL_DATASET}
-
-        with tempfile.NamedTemporaryFile() as fp:
-            store_dataset(fp)
-            fp.flush()
-            graph = analyze.load(
-                "ria", ["alpha=2"], "file", ["file={0}".format(fp.name)])
-
-        self.assertIsInstance(graph, ria.BipartiteGraph)
-        self.assertEqual(graph.alpha, 2)
-        self.assertTrue(graph.reviewers)
-        for r in graph.reviewers:
-            self.assertIn(r.name, reviewer_names)
-
-        self.assertTrue(graph.products)
-        for p in graph.products:
-            self.assertIn(p.name, product_names)
+import helper
+from tests.dataset import store_dataset
 
 
 class TestAnalyze(unittest.TestCase):
@@ -71,8 +43,9 @@ class TestAnalyze(unittest.TestCase):
         with tempfile.NamedTemporaryFile() as fp:
             store_dataset(fp)
             fp.flush()
-            graph = analyze.load(
-                "ria", ["alpha=2"], "file", ["file={0}".format(fp.name)])
+            graph = helper.load(
+                helper.graph("ria", ["alpha=2"]),
+                "file", ["file={0}".format(fp.name)])
 
         buf = StringIO()
         analyze.analyze(graph, output=buf, loop=5, threshold=0)

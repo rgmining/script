@@ -1,5 +1,5 @@
 #
-# helper/__init__.py
+# algorithms_test.py
 #
 # Copyright (c) 2017 Junpei Kawamoto
 #
@@ -18,15 +18,24 @@
 # You should have received a copy of the GNU General Public License
 # along with rgmining-script. If not, see <http://www.gnu.org/licenses/>.
 #
-"""Helper modules.
-
-This module exports two variables, :data:`ALGORITHMS <algorithms.ALGORITHMS>`
-and :data:`DATASETS <datasets.DATASETS>`, and two functions
-:meth:`graph() <algorithms.graph>` and :meth:`load() <datasets.load>`.
-See each document for more information.
+# pylint: disable=import-error,no-member,invalid-name
+"""Unit tests for helper.algorithms module.
 """
-from __future__ import absolute_import
-from helper.algorithms import ALGORITHMS
-from helper.datasets import DATASETS
-from helper.algorithms import graph
-from helper.datasets import load
+import unittest
+import ria
+import helper
+
+class TestGraph(unittest.TestCase):
+    """Test case for function graph.
+    """
+
+    def test_ria_graph(self):
+        """Test for creating a RIA graph with a small dataset.
+        """
+        graph = helper.graph("ria", ["alpha=2"])
+        self.assertIsInstance(graph, ria.BipartiteGraph)
+        self.assertEqual(graph.alpha, 2)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -24,7 +24,6 @@
 from __future__ import absolute_import
 from StringIO import StringIO
 import json
-import tempfile
 import unittest
 
 import dataset
@@ -32,32 +31,6 @@ import dataset_io
 import numpy as np
 import ria
 from tests.dataset import store_dataset, SMALL_DATASET
-
-
-class TestLoad(unittest.TestCase):
-    """Test case for function load.
-    """
-
-    def test_ria_graph(self):
-        """Test for creating a RIA graph with a small dataset.
-        """
-
-        reviewer_names = {review["member_id"] for review in SMALL_DATASET}
-        product_names = {review["product_id"] for review in SMALL_DATASET}
-
-        with tempfile.NamedTemporaryFile() as fp:
-            store_dataset(fp)
-            fp.flush()
-            graph = dataset.load("file", ["file={0}".format(fp.name)])
-
-        self.assertIsInstance(graph, ria.BipartiteGraph)
-        self.assertTrue(graph.reviewers)
-        for r in graph.reviewers:
-            self.assertIn(r.name, reviewer_names)
-
-        self.assertTrue(graph.products)
-        for p in graph.products:
-            self.assertIn(p.name, product_names)
 
 
 class TestBase(unittest.TestCase):
@@ -261,8 +234,6 @@ class TestReviewVariance(TestBase):
         res = [json.loads(item) for item in buf.getvalue().split("\n") if item]
         self.assertEqual(len(res), 2)
         self.assertSetEqual({r["product_id"] for r in res}, targets)
-
-
 
 
 if __name__ == "__main__":

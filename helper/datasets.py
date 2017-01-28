@@ -88,3 +88,30 @@ else:
 # Register the loader which load a dataset from a file.
 # The loder function takes kwargument, fp, where it loads the dataset.
 DATASETS["file"] = dataset_io.load
+
+
+def load(graph, dataset, dataset_param):
+    """Load a dataset and return a review graph.
+
+    Args:
+      graph: review graph object which the dataset is loaded to.
+      dataset: name of the dataset to be loaded.
+      dataset_param: list of key-value parameters.
+
+    Returns:
+      Review graph object, which is as same as the parameter graph.
+    """
+    _LOGGER.info("Prepare options for the selected dataset.")
+    params = {key: value
+              for key, value in [v.split("=") for v in dataset_param]}
+    if "file" in params:
+        params["fp"] = open(params["file"])
+        del params["file"]
+
+    try:
+        _LOGGER.info("Load the dataset.")
+        DATASETS[dataset](graph, **params)
+    finally:
+        if "fp" in params:
+            params["fp"].close()
+    return graph

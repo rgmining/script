@@ -41,14 +41,10 @@ i.e. to set alpha = 1, give --dataset-param alpha=1.
 from __future__ import absolute_import
 import dsargparse
 import logging
-from os import path
 import sys
 
 import dataset_io
-
-sys.path.append(path.join(path.dirname(__file__), "../"))
-from helper import ALGORITHMS
-from helper import DATASETS
+import helper
 
 
 def analyze(graph, output=sys.stdout, loop=20, threshold=10**-5):
@@ -86,39 +82,6 @@ def analyze(graph, output=sys.stdout, loop=20, threshold=10**-5):
     dataset_io.print_state(graph, "final", output)
 
 
-def load(method, method_param, dataset, dataset_param):
-    """Create a review graph, load a dataset to it.
-
-    Args:
-      method: name of the method to be run.
-      method_param: list of strings representing key-value pairs.
-      dataset: name of the dataset to be loaded.
-      dataset_param: list of strings representing key-value pairs.
-
-    Returns:
-      Graph object.
-    """
-    # Create a review graph.
-    method_param = {key: float(value)
-                  for key, value in [v.split("=") for v in method_param]}
-    graph = ALGORITHMS[method](**method_param)
-
-    # Load a dataset.
-    dataset_param = {key: value
-              for key, value in [v.split("=") for v in dataset_param]}
-    if "file" in dataset_param:
-        dataset_param["fp"] = open(dataset_param["file"])
-        del dataset_param["file"]
-    try:
-        logging.info("Load the dataset.")
-        DATASETS[dataset](graph, **dataset_param)
-    finally:
-        if "fp" in dataset_param:
-            dataset_param["fp"].close()
-
-    return graph
-
-
 def run(method, method_param, dataset, dataset_param, **kwargs):
     """Prepare a review graph, load a dataset to it, and execute analyze.
 
@@ -128,7 +91,8 @@ def run(method, method_param, dataset, dataset_param, **kwargs):
       dataset: name of the dataset to be loaded.
       dataset_param: list of strings representing key-value pairs.
     """
-    analyze(load(method, method_param, dataset, dataset_param), **kwargs)
+    graph = helper.graph(method, method_param)
+    analyze(helper.load(graph, dataset, dataset_param), **kwargs)
 
 
 def main():
@@ -139,7 +103,7 @@ def main():
 
     # Dataset
     parser.add_argument(
-        "dataset", choices=sorted(DATASETS.keys()),
+        "dataset", choices=sorted(helper.DATASETS.keys()),
         help=(
             "choose one dataset to be analyzed.\n"
             "If choose `file`, give a file path via dataset-param with file key\n"
@@ -152,7 +116,7 @@ def main():
 
     # Algorithm
     parser.add_argument(
-        "method", choices=sorted(ALGORITHMS.keys()),
+        "method", choices=sorted(helper.ALGORITHMS.keys()),
         help="choose one method.")
     parser.add_argument(
         "--method_param", action="append", default=[],

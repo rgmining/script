@@ -88,3 +88,19 @@ else:
         """
         return fraudar.ReviewGraph(int(nblock))
     ALGORITHMS["fraudar"] = create_fraudar_graph
+
+
+def graph(method, method_param):
+    """Create a review graph.
+
+    Args:
+      method: name of the method to be run.
+      method_param: list of strings representing key-value pairs.
+
+    Returns:
+      Graph object.
+    """
+    # Create a review graph.
+    method_param = {key: float(value)
+                  for key, value in [v.split("=") for v in method_param]}
+    return ALGORITHMS[method](**method_param)
