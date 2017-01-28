@@ -42,14 +42,10 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">dsargparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">dataset_io</span>
-
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../&quot;</span><span class="p">))</span>
-<span class="kn">from</span> <span class="nn">helper</span> <span class="k">import</span> <span class="n">ALGORITHMS</span>
-<span class="kn">from</span> <span class="nn">helper</span> <span class="k">import</span> <span class="n">DATASETS</span>
+<span class="kn">import</span> <span class="nn">helper</span>
 
 
 <div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../modules/analyze.html#analyze.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">):</span>
@@ -87,39 +83,6 @@
     <span class="n">dataset_io</span><span class="o">.</span><span class="n">print_state</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;final&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load"><a class="viewcode-back" href="../modules/analyze.html#analyze.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method_param</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a review graph, load a dataset to it.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">      method: name of the method to be run.</span>
-<span class="sd">      method_param: list of strings representing key-value pairs.</span>
-<span class="sd">      dataset: name of the dataset to be loaded.</span>
-<span class="sd">      dataset_param: list of strings representing key-value pairs.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">      Graph object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Create a review graph.</span>
-    <span class="n">method_param</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                  <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">method_param</span><span class="p">]}</span>
-    <span class="n">graph</span> <span class="o">=</span> <span class="n">ALGORITHMS</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="o">**</span><span class="n">method_param</span><span class="p">)</span>
-
-    <span class="c1"># Load a dataset.</span>
-    <span class="n">dataset_param</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span>
-              <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dataset_param</span><span class="p">]}</span>
-    <span class="k">if</span> <span class="s2">&quot;file&quot;</span> <span class="ow">in</span> <span class="n">dataset_param</span><span class="p">:</span>
-        <span class="n">dataset_param</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dataset_param</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">])</span>
-        <span class="k">del</span> <span class="n">dataset_param</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Load the dataset.&quot;</span><span class="p">)</span>
-        <span class="n">DATASETS</span><span class="p">[</span><span class="n">dataset</span><span class="p">](</span><span class="n">graph</span><span class="p">,</span> <span class="o">**</span><span class="n">dataset_param</span><span class="p">)</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;fp&quot;</span> <span class="ow">in</span> <span class="n">dataset_param</span><span class="p">:</span>
-            <span class="n">dataset_param</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">graph</span></div>
-
-
 <div class="viewcode-block" id="run"><a class="viewcode-back" href="../modules/analyze.html#analyze.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method_param</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prepare a review graph, load a dataset to it, and execute analyze.</span>
 
@@ -129,7 +92,8 @@
 <span class="sd">      dataset: name of the dataset to be loaded.</span>
 <span class="sd">      dataset_param: list of strings representing key-value pairs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">analyze</span><span class="p">(</span><span class="n">load</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method_param</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">graph</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method_param</span><span class="p">)</span>
+    <span class="n">analyze</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dataset_param</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../modules/analyze.html#analyze.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -140,7 +104,7 @@
 
     <span class="c1"># Dataset</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+        <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">DATASETS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
         <span class="n">help</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;choose one dataset to be analyzed.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;If choose `file`, give a file path via dataset-param with file key</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -153,7 +117,7 @@
 
     <span class="c1"># Algorithm</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ALGORITHMS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">helper</span><span class="o">.</span><span class="n">ALGORITHMS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose one method.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--method_param&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span>

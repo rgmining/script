@@ -89,4 +89,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fraudar</span><span class="o">.</span><span class="n">ReviewGraph</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nblock</span><span class="p">))</span>
     <span class="n">ALGORITHMS</span><span class="p">[</span><span class="s2">&quot;fraudar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_fraudar_graph</span>
+
+
+<div class="viewcode-block" id="graph"><a class="viewcode-back" href="../../modules/helper.html#helper.algorithms.graph">[docs]</a><span class="k">def</span> <span class="nf">graph</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">method_param</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a review graph.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      method: name of the method to be run.</span>
+<span class="sd">      method_param: list of strings representing key-value pairs.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Graph object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a review graph.</span>
+    <span class="n">method_param</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">method_param</span><span class="p">]}</span>
+    <span class="k">return</span> <span class="n">ALGORITHMS</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="o">**</span><span class="n">method_param</span><span class="p">)</span></div>
 </pre></div> </div> <div class="articleComments"> </div> </div> <footer> <hr> <div role="contentinfo"> <p> &copy; Copyright 2017, Junpei Kawamoto. </p> </div> Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. <p> </p><div class="addthis_inline_follow_toolbox"></div> <p></p> <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4734862314145555" data-ad-slot="6934003829" data-ad-format="auto"></ins> <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> </footer> </div> </div> </section> </div> <script>var DOCUMENTATION_OPTIONS={URL_ROOT:"../../",VERSION:"0.5.0",COLLAPSE_INDEX:!1,FILE_SUFFIX:".html",HAS_SOURCE:!0,SOURCELINK_SUFFIX:".txt"}</script> <script src="../../_static/jquery.js"></script> <script src="../../_static/underscore.js"></script> <script src="../../_static/doctools.js"></script> <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> <script src="../../_static/js/theme.js"></script> <script>jQuery(function(){SphinxRtdTheme.StickyNav.enable()})</script> <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57f1fa5b740feddd"></script> </body> </html>
