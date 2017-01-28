@@ -29,6 +29,7 @@ from os import path
 import sys
 
 from common.writer import JSONWriter, CSVWriter
+import dataset_io
 import dsargparse
 import ria
 import numpy as np
@@ -345,10 +346,13 @@ def review_variance(graph, output, target=None, csv_format=False):
         })
 
 
-def _dispatch(cmd, dataset, dataset_param, **kwargs):
+def _dispatch(cmd, dataset, dataset_param, additional, **kwargs):
     """Dispatch command to be run.
     """
     graph = helper.load(ria.one_graph(), dataset, dataset_param)
+    for item in additional:
+        with open(item) as fp:
+            dataset_io.load(graph, fp)
 
     logging.info("Start analyzing.")
     cmd(graph=graph, **kwargs)
@@ -357,7 +361,6 @@ def _dispatch(cmd, dataset, dataset_param, **kwargs):
 def main():
     """The main function.
     """
-    # TODO: Support loading additional datasets.
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
     parser = dsargparse.ArgumentParser(main=main)
     parser.add_argument(
@@ -374,6 +377,11 @@ def main():
         "--dataset-param", action="append", default=[], dest="dataset_param",
         help=(
             "key and value pair which are connected with '='.\n"
+            "This option can be set multiply."))
+    parser.add_argument(
+        "--additional-dataset", action="append", default=[], dest="additional",
+        help=(
+            "add an additional dataset file to be loaded.\n"
             "This option can be set multiply."))
 
     subparsers = parser.add_subparsers()
