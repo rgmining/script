@@ -1,7 +1,16 @@
 language: python
 apt:
   packages:
-    - python-numpy
-    - python-scipy
+  - python-numpy
+  - python-scipy
 script:
-  - python setup.py test
+- python setup.py test
+deploy:
+  provider: pypi
+  user: jkawamoto
+  password:
+    secure: TJBXYByV+6eiUaI4vCUZBKZffhmhoAXE90H+st9+FV9lLNLJZFvOZo2dC6laPHuVUh5vKf8B7jn6GCq1a3VLP3LVG9bBnMlfW7+n4T/Yt6ycdhVg+FYRYY16Hxqjg07vcvdXsiD6VqOwfDtTTVGrLTl3YMFR2mJf8/+U1mceEM5ef/vHPKH16g/bjMqpKv/FX2gtMlm08iaz6/TW2oUZIo/Q9sjBQIliTTPTRKQqXJEzgkJERzdI5uh4Fq4MtKgO2ioQ3/y0TPTMGR7Q8yBc1P9Yjxkw8ZhmqWTjnfYQjGNzRsWdXY12o1PjDv9esV4Exeq1Gb6BZ6d5qJnM+Gl8t5jRn7ce/8OFy/uMMw+agKwbBEA5PPx4qovAR3be9zkQ6aNsk89ntKz52F5XZC2ll13gj6Z38IDZrEdjlqYMqNhAyt0iWlUrOse7kLeUw0kmUvAU2hbl1N/8IFQisoZKOVnurWOA5dYA8oDHs4ZlmsrT3gGWE9y84ZTqx4p3u7Vdm5zYZV7ogtXK5zu5wMG863TEQIwHtzotOhIOIfEPWjsqrdpX/LLQ6A/pw9BCCQTRlQW/ORTiikW8A5KFc5luTjIbDzz9i/DXXDc4FEWxMV/7T5tGxT8D65mRmB/LLnHEz15kKw0We2hFTdvlUa2mdAJNXQ5BlH5jDxW7/w3/Cp8=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: rgmining/script
