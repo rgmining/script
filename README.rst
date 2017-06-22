@@ -1,5 +1,5 @@
-Scripts for Analyzing Review Graphs
-===================================
+CLI tools for analyzing review graphs 
+======================================
 
 |GPLv3| |Build Status| |wercker status| |Release|
 
