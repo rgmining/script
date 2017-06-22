@@ -3,8 +3,8 @@
 
 .. _top:
 
-Scripts for Analyzing Review Graphs
-===================================
+CLI tools for analyzing review graphs 
+======================================
 .. raw:: html
 
    <div class="addthis_inline_share_toolbox"></div>

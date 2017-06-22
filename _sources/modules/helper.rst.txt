@@ -9,16 +9,16 @@ helper package
 Submodules
 ----------
 
-helper.algorithms module
-------------------------
+helper\.algorithms module
+-------------------------
 
 .. automodule:: helper.algorithms
     :members:
     :undoc-members:
     :show-inheritance:
 
-helper.datasets module
-----------------------
+helper\.datasets module
+-----------------------
 
 .. automodule:: helper.datasets
     :members:
