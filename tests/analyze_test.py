@@ -24,7 +24,10 @@
 from __future__ import absolute_import
 from collections import defaultdict
 import json
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import tempfile
 import unittest
 
@@ -40,7 +43,7 @@ class TestAnalyze(unittest.TestCase):
     def test_iteration(self):
         """Test analyze runs at most given number of iteration.
         """
-        with tempfile.NamedTemporaryFile() as fp:
+        with tempfile.NamedTemporaryFile("w") as fp:
             store_dataset(fp)
             fp.flush()
             graph = helper.load(

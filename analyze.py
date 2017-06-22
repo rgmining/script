@@ -39,9 +39,10 @@ The flag takes key and value as same format as --dataset-param,
 i.e. to set alpha = 1, give --dataset-param alpha=1.
 """
 from __future__ import absolute_import
-import dsargparse
 import logging
 import sys
+
+import dsargparse
 
 import dataset_io
 import helper
@@ -68,7 +69,7 @@ def analyze(graph, output=sys.stdout, loop=20, threshold=10**-5):
 
     # Updates
     logging.info("Start iterations.")
-    for i in xrange(loop):
+    for i in range(loop):
 
         diff = graph.update()
         if diff is not None and diff < threshold:
@@ -127,7 +128,7 @@ def main():
         "--loop", type=int, default=20,
         help="At most the given number of iteration will be run (default: 20).")
     parser.add_argument(
-        "--threshold", type=float, default=10^-5,
+        "--threshold", type=float, default=10 ^ -5,
         help=(
             "Loop ends the update will be smaller than the given number "
             "(default: 10^-5)."))

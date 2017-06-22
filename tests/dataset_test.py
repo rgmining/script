@@ -22,7 +22,10 @@
 """Unit test for dataset command.
 """
 from __future__ import absolute_import
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import json
 import unittest
 
@@ -42,7 +45,8 @@ class TestBase(unittest.TestCase):
         """
         buf = StringIO()
         store_dataset(buf)
-        self.graph = dataset_io.load(ria.one_graph(), buf.getvalue().split("\n"))
+        self.graph = dataset_io.load(
+            ria.one_graph(), buf.getvalue().split("\n"))
 
 
 class TestRetrieveReviewers(TestBase):
@@ -75,6 +79,7 @@ class TestRetrieveReviewers(TestBase):
 class TestActiveReviewers(TestBase):
     """Test case for active_reviewers.
     """
+
     def test(self):
         """Test with a simple example.
         """

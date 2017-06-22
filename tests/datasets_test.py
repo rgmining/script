@@ -41,7 +41,7 @@ class TestLoad(unittest.TestCase):
         product_names = {review["product_id"] for review in SMALL_DATASET}
 
         graph = ria.one_graph()
-        with tempfile.NamedTemporaryFile() as fp:
+        with tempfile.NamedTemporaryFile("w") as fp:
             store_dataset(fp)
             fp.flush()
             datasets.load(graph, "file", ["file={0}".format(fp.name)])

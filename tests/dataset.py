@@ -23,10 +23,11 @@
 This module also provides a function which stores the small dataset to a file,
 so that tests can load it via the dataset-io library.
 """
+# pylint: disable=invalid-name
 import json
 
 
-SMALL_DATASET=[
+SMALL_DATASET = [
     {
         "member_id": "reviewer1",
         "product_id": "product1",
